@@ -1,4 +1,4 @@
-### IntelliJ IDEA ###
+# IntelliJ IDEA
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
@@ -7,7 +7,7 @@ lib/
 cmake-build-*/
 *.iml
 
-### Eclipse ###
+# Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -19,19 +19,20 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# VS Code
 .vscode/
 
-### Mac OS ###
+# Mac OS
 .DS_Store
 
+# Node.js dependencies
 ./ca1/node_modules/
 ./ca1/jspm_packages/
 ./ca1/web_modules/
@@ -39,13 +40,13 @@ bin/
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional npm cache directory
+# npm cache
 .npm
 
-# Optional eslint cache
+# eslint cache
 .eslintcache
 
-# Optional stylelint cache
+# stylelint cache
 .stylelintcache
 
 # Microbundle cache
@@ -54,23 +55,23 @@ bin/
 .rts2_cache_es/
 .rts2_cache_umd/
 
-# Optional REPL history
+# REPL history
 .node_repl_history
 
-# Output of 'npm pack'
+# npm pack output
 *.tgz
 
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
+# dotenv files
 .env
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
 
-# parcel-bundler cache (https://parceljs.org/)
+# parcel-bundler cache
 .cache
 .parcel-cache
 
@@ -78,15 +79,12 @@ bin/
 .next
 out
 
-# Nuxt.js build / generate output
+# Nuxt.js build output
 .nuxt
 dist
 
 # Gatsby files
 .cache/
-# Comment in the public line in if your project uses Gatsby and not Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
 
 # vuepress build output
 .vuepress/dist
@@ -109,7 +107,7 @@ dist
 # TernJS port file
 .tern-port
 
-# Stores VSCode versions used for testing VSCode extensions
+# VSCode test versions
 .vscode-test
 
 # yarn v2
@@ -119,22 +117,13 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-### Node Patch ###
 # Serverless Webpack directories
 .webpack/
 
-# Optional stylelint cache
-
-# SvelteKit build / generate output
+# SvelteKit build output
 .svelte-kit
 
-# End of https://www.toptal.com/developers/gitignore/api/node
-
-# Created by https://www.toptal.com/developers/gitignore/api/java
-# Edit at https://www.toptal.com/developers/gitignore?templates=java
-
-### Java ###
-# Compiled class file
+# Java compiled class files
 *.class
 
 # BlueJ files
@@ -143,7 +132,7 @@ dist
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Java package files
 *.jar
 *.war
 *.nar
@@ -152,31 +141,21 @@ dist
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# JVM crash logs
 hs_err_pid*
 replay_pid*
 
-basic/target/
-
+# Gradle
 .gradle/
-
 build/
-
 .idea/*
-
 /.idea/
-
 .DS_Store/
-
 backup/
-
 *.swp
-
 src.zip
 
-#---
-
-HELP.md
+# Gradle specific
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -184,18 +163,18 @@ HELP.md
 *.iws
 *.ipr
 
+# Static resources
 src/main/resources/static/built/
 
+# Frontend Gradle plugin
 .frontend-gradle-plugin/
 
+# Node.js
 node/
-
 node_modules/
-
 dist/
 
-#---
-### Maven ###
+# Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -230,9 +209,7 @@ build/Release
 jspm_packages/
 
 # Vagrant environment
-
 ca3/part2/.vagrant/
 
 # Docker
-
 ca4/part2/data/
