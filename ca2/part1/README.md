@@ -92,6 +92,7 @@ nano .gitignore
 
 Add the following lines to the `.gitignore` file:
 
+```gitignore
 #Ignore Gradle project-specific cache directory
 
 .gradle/
