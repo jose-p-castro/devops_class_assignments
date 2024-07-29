@@ -232,3 +232,7 @@ jspm_packages/
 # Vagrant environment
 
 ca3/part2/.vagrant/
+
+# Docker
+
+ca4/part2/data/
