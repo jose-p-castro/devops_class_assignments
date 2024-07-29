@@ -1,0 +1,105 @@
+pipeline {
+    agent any
+    stages {
+        stage ('Checkout') {
+            steps {
+                echo 'Checking out...'
+                git 'https://github.com/J2PCastro/devops-23-24-PSM-1231836.git'
+            }
+        }
+        stage('Prepare') {
+            steps {
+                echo 'Setting executable permissions for gradlew...'
+                script {
+                    if (isUnix()) {
+                        dir('ca2/part2/react-and-spring-data-rest-basic') {
+                            sh 'chmod +x gradlew'
+                        }
+                    } else {
+                        echo 'Skipping chmod on Windows'
+                    }
+                }
+            }
+        }
+        stage ('Assemble') {
+            steps {
+                echo 'Assembling ca2/part2/react-and-spring-data-rest-basic project...'
+                script {
+                    if (isUnix()) {
+                        dir ('ca2/part2/react-and-spring-data-rest-basic') {
+                            sh './gradlew clean'
+                            sh './gradlew assemble'
+                        }
+                    } else {
+                       dir ('ca2/part2/react-and-spring-data-rest-basic') {
+                            bat 'gradlew.bat clean'
+                            bat 'gradlew.bat assemble'
+                       }
+                    }
+                }
+            }
+        }
+        stage ('Test') {
+            steps {
+                echo 'Running tests...'
+                script {
+                    if (isUnix()) {
+                        dir('ca2/part2/react-and-spring-data-rest-basic') {
+                            sh './gradlew test'
+                        }
+                    } else {
+                        dir('ca2/part2/react-and-spring-data-rest-basic') {
+                            bat 'gradlew.bat test'
+                        }
+                    }
+                }
+            }
+            post {
+                always {
+                    echo 'Publishing test results...'
+                    junit 'ca2/part2/react-and-spring-data-rest-basic/build/test-results/test/*.xml'
+                }
+            }
+        }
+        stage ('Javadoc') {
+            steps {
+                echo 'Generating Javadoc...'
+                script {
+                    if (isUnix()) {
+                        dir('ca2/part2/react-and-spring-data-rest-basic') {
+                            sh './gradlew javadoc'
+                        }
+                    } else {
+                        dir('ca2/part2/react-and-spring-data-rest-basic') {
+                            bat 'gradlew.bat javadoc'
+                        }
+                    }
+                }
+                echo 'Archiving and publishing Javadoc...'
+                publishHTML(target: [allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: '/var/jenkins_home/workspace/ca5_pipeline/ca2/part2/react-and-spring-data-rest-basic/build/docs/javadoc',
+                reportFiles: 'index.html',
+                reportName: 'Javadoc Report'])
+            }
+        }
+        stage ('Archiving') {
+            steps {
+                echo 'Archiving...'
+                archiveArtifacts 'ca2/part2/react-and-spring-data-rest-basic/build/libs/*.war'
+            }
+        }
+        stage('Docker') {
+            steps {
+                script {
+                    echo 'Building and publishing Docker image...'
+                    def dockerImage = docker.build("josepedrocastro/react-and-spring-data-rest-basic:${env.BUILD_ID}", "-f ./ca5/Dockerfile .")
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-id') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+    }
+}

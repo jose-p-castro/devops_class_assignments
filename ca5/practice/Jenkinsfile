@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+    stages {
+        stage ('Checkout') {
+            steps {
+                echo 'Checking out...'
+                git 'https://github.com/J2PCastro/devops-23-24-PSM-1231836.git'
+            }
+        }
+        stage('Prepare') {
+            steps {
+                echo 'Setting executable permissions for gradlew...'
+                script {
+                    if (isUnix()) {
+                        dir('ca2/part1') {
+                            sh 'chmod +x gradlew'
+                        }
+                    } else {
+                        echo 'Skipping chmod on Windows'
+                    }
+                }
+            }
+        }
+        stage ('Assemble') {
+            steps {
+                echo 'Assembling ca2/part1 project...'
+                script {
+                    if (isUnix()) {
+                        dir ('ca2/part1') {
+                            sh './gradlew clean'
+                            sh './gradlew assemble'
+                        }
+                    } else {
+                        dir ('ca2/part1') {
+                            bat 'gradlew.bat clean'
+                            bat 'gradlew.bat assemble'
+                        }
+                    }
+                }
+            }
+        }
+        stage ('Test') {
+            steps {
+                echo 'Running tests...'
+                script {
+                    if (isUnix()) {
+                        dir('ca2/part1') {
+                            sh './gradlew test'
+                        }
+                    } else {
+                        dir('ca2/part1') {
+                            bat 'gradlew.bat test'
+                        }
+                    }
+                }
+            }
+            post {
+                always {
+                    echo 'Publishing test results...'
+                    junit 'ca2/part1/build/test-results/test/*.xml'
+                }
+            }
+        }
+        stage ('Archiving') {
+            steps {
+                echo 'Archiving...'
+                archiveArtifacts 'ca2/part1/build/libs/*.jar'
+            }
+        }
+    }
+}
