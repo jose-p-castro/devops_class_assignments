@@ -228,3 +228,7 @@ bower_components
 .lock-wscript
 build/Release
 jspm_packages/
+
+# Vagrant environment
+
+ca3/part2/.vagrant/
