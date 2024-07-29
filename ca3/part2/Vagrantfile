@@ -28,10 +28,6 @@ Vagrant.configure("2") do |config|
     SHELL
 
     # The following provision shell will ALWAYS run so that we can execute the H2 server process
-    # This could be done in a different way, for instance, setting H2 as as service, like in the following link:
-    # How to setup java as a service in ubuntu: http://www.jcgonzalez.com/ubuntu-16-java-service-wrapper-example
-    #
-    # To connect to H2 use: jdbc:h2:tcp://192.168.33.11:9092/./jpadb
     db.vm.provision "shell", :run => 'always', inline: <<-SHELL
       java -cp ./h2*.jar org.h2.tools.Server -web -webAllowOthers -tcp -tcpAllowOthers -ifNotExists > ~/out.txt &
     SHELL
@@ -83,7 +79,10 @@ Vagrant.configure("2") do |config|
       ./gradlew clean build
       # To deploy the war file to tomcat10 do the following command:
       sudo cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.war /opt/tomcat/webapps/
-      # The following command will start tomcat
+    SHELL
+
+    # Always run this provision to start Tomcat
+    web.vm.provision "shell", :run => 'always', inline: <<-SHELL
       sudo /opt/tomcat/bin/startup.sh
     SHELL
   end
