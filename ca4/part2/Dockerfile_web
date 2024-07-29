@@ -1,0 +1,36 @@
+FROM tomcat:10.1.24-jdk17-temurin-jammy
+LABEL authors="José Castro"
+
+# Install Git
+RUN apt-get update && apt-get install -y git
+
+# Set working directory
+WORKDIR /app
+
+# Clone the repository
+RUN git clone https://github.com/J2PCastro/devops-23-24-PSM-1231836.git
+
+# Set working directory
+WORKDIR devops-23-24-PSM-1231836/ca2/part2/react-and-spring-data-rest-basic/
+
+# Update application properties
+# Uncomment the first line in application.properties
+RUN sed -i '0,/^[ \t]*#server.servlet.context-path=/s//server.servlet.context-path=/g' src/main/resources/application.properties
+
+# Modify the application.properties file to set SPRING_DATASOURCE_URL
+RUN sed -i 's|spring.datasource.url=.*|spring.datasource.url=jdbc:h2:tcp://db:9092/./jpadb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE|' src/main/resources/application.properties
+
+# Modify the app.js file to set the correct path
+RUN sed -i "s|path: '/api/employees'|path: '/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT/api/employees'|" src/main/js/app.js
+
+# Make the Gradle wrapper executable
+RUN chmod +x gradlew
+
+# Build the application and copy the war file to the Tomcat webapps directory
+RUN ./gradlew clean build && cp ./build/libs/react-and-spring-data-rest-basic-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/
+
+# Expose port 8080
+EXPOSE 8080
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]

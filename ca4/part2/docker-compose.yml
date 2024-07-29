@@ -1,0 +1,36 @@
+version: '3'
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile_db
+    container_name: ca4_part2_db
+    ports:
+      - "8082:8082"
+      - "9092:9092"
+    volumes:
+      - h2-data:/opt/h2-data
+    networks:
+      app-network:
+        ipv4_address: 192.168.33.11
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile_web
+    container_name: ca4_part2_web
+    ports:
+      - "8080:8080"
+    networks:
+      app-network:
+        ipv4_address: 192.168.33.10
+    depends_on:
+      - "db"
+volumes:
+  h2-data:
+    driver: local
+networks:
+  app-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.33.0/24

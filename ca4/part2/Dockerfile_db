@@ -1,0 +1,17 @@
+FROM ubuntu:focal
+
+# Install Java 17
+RUN apt-get update && apt-get install -y wget openjdk-17-jdk-headless && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /opt/h2
+
+# Download H2 database
+RUN wget https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar -O h2.jar
+
+# Expose ports
+EXPOSE 8082
+EXPOSE 9092
+
+# Start H2 database
+CMD ["java", "-cp", "h2.jar", "org.h2.tools.Server", "-ifNotExists", "-web", "-webAllowOthers", "-webPort", "8082", "-tcp", "-tcpAllowOthers", "-tcpPort", "9092"]
